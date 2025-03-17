@@ -10,7 +10,7 @@ RUN sed -i 's/deb.debian.org/mirrors.tencent.com/g' /etc/apt/sources.list.d/debi
   sed -i 's|security.debian.org/debian-security|mirrors.tencent.com/debian-security|g' /etc/apt/sources.list.d/debian.sources
 
 RUN apt update                                  &&\
-  apt install -y curl git make vim              &&\
+  apt install -y clang curl git make vim        &&\
   apt clean                                     &&\
   rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
 
