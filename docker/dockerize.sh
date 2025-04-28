@@ -2,7 +2,6 @@
 
 set -e
 
-build_arg_opts="$build_arg_opts --build-arg RUST_TOOLCHAIN=1.85.0"
 build_arg_opts="$build_arg_opts --build-arg WASI_SDK_MAJOR_VERSION=25"
 build_arg_opts="$build_arg_opts --build-arg WASI_SDK_MINOR_VERSION=0"
 build_arg_opts="$build_arg_opts --build-arg WASMTIME_VERSION=30.0.0"
