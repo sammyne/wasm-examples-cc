@@ -1,23 +1,25 @@
-FROM debian:bookworm-20250224 AS rust
+#FROM debian:bookworm-20250224 AS rust
+FROM rust:1.85.0-bookworm AS rust
 
 ENV RUSTUP_DIST_SERVER=https://rsproxy.cn       \
-  RUSTUP_UPDATE_ROOT=https://rsproxy.cn/rustup  \
-  CARGO_HOME=/usr/local/cargo                   \
-  RUSTUP_HOME=/usr/local/rustup                 \
-  PATH=/usr/local/cargo/bin:$PATH
+  RUSTUP_UPDATE_ROOT=https://rsproxy.cn/rustup
 
 RUN sed -i 's/deb.debian.org/mirrors.tencent.com/g' /etc/apt/sources.list.d/debian.sources &&\
   sed -i 's|security.debian.org/debian-security|mirrors.tencent.com/debian-security|g' /etc/apt/sources.list.d/debian.sources
 
-RUN apt update                                  &&\
-  apt install -y clang curl git make vim        &&\
-  apt clean                                     &&\
+# 下载并添加 GPG 密钥
+# 添加 LLVM 18 的 APT 源（Debian 12 代号为 bookworm）
+RUN wget -qO- https://apt.llvm.org/llvm-snapshot.gpg.key | tee /etc/apt/trusted.gpg.d/llvm.asc &&\
+  echo "deb http://apt.llvm.org/bookworm/ llvm-toolchain-bookworm-18 main" | tee /etc/apt/sources.list.d/llvm-18.list
+
+RUN apt update                                        &&\
+  apt install -y ca-certificates &&\
+  apt install -y clang-18 lldb-18 curl git make vim  &&\
+  apt clean                                           &&\
   rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
 
-ARG RUST_TOOLCHAIN
+RUN ln -sf `which clang-18` /usr/bin/clang && ln -sf `which lldb-18` /usr/bin/lldb 
 
-RUN curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | \
-  sh -s -- --default-toolchain $RUST_TOOLCHAIN --profile default -y
 
 FROM busybox:1.36.1 AS wasi-sdk
 
