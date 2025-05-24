@@ -10,13 +10,17 @@ name=github-wasm-studio-cc
 
 docker rm -f $name
 
-docker run -td --rm                     \
-  --name $name          \
-  -e CARGO_HOME=/root/.cargo      \
-  -v $PWD:$workdir                \
+docker run -td --rm                               \
+  --name $name                                    \
+  -e CARGO_HOME=/root/.cargo                      \
+  -v $PWD:$workdir                                \
   -v $cargo_home/registry:/root/.cargo/registry   \
   -v $cargo_home/git:/root/.cargo/git             \
-  -w $workdir                     \
+  -w $workdir                                     \
   $repo_tag bash
+
+if [ -d _ssh ]; then
+  docker cp _ssh $name:/root/.ssh
+fi
 
 docker exec -it $name bash
