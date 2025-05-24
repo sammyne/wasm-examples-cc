@@ -55,7 +55,7 @@ fn main() -> anyhow::Result<()> {
     let mut results = [Val::Bool(false)];
     say_hello_again.call(&mut store, &params, &mut results).context("call")?;
     // post-return 清理 say-hello 关联的状态。
-    say_hello.post_return(&mut store).with_context(|| format!("post return '{FUNC_NAME}'"))?;
+    say_hello_again.post_return(&mut store).with_context(|| format!("post return '{FUNC_NAME}'"))?;
     println!("say-hello-again returns {results:?}");
 
 
