@@ -81,9 +81,13 @@ COPY --from=wasmtime /output wasmtime
 
 COPY --from=wit-bindgen /output wit-bindgen
 
+COPY --from=sammyne/sccache:0.10.0-ubuntu24.04 /opt/sccache sccache
+
 
 FROM rust
 
-ENV PATH=/opt/wasmtime:/opt/wasm-tools:/opt/wit-bindgen:$PATH
+ENV PATH=/opt/sccache:/opt/wasmtime:/opt/wasm-tools:/opt/wit-bindgen:$PATH
+
+ENV RUSTC_WRAPPER=/opt/sccache/sccache
 
 COPY --from=rc /output/opt /opt
