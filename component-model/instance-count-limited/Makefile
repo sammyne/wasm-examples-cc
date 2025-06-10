@@ -1,3 +1,6 @@
+
+host = $(shell grep 'name' host-rs/Cargo.toml  | head -1 | awk -F'"' '{print $$2}')
+
 .PHONY: all
 all: run
 
@@ -13,7 +16,7 @@ guest/out/app.wasm: guest/src/lib.cc guest/Makefile
 	make -C guest
 
 run: guest/out/app.wasm build-host
-	../../target/release/host-trap-by-oom -p $<
+	../../target/release/$(host) -p $<
 
 $(OUT_DIR):
 	mkdir -p $(OUT_DIR)
