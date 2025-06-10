@@ -1,0 +1,6 @@
+[workspace]
+members = [
+  "component-model/instance-count-limited/host-rs"
+]
+
+resolver = "2"
