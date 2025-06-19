@@ -1,5 +1,6 @@
 [workspace]
 members = [
+  "component-model/hello-world/host-rs",
   "component-model/instance-count-limited/host-rs",
   "component-model/trap-by-oom/host-rs"
 ]
