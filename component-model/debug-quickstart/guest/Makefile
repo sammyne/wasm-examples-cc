@@ -28,3 +28,6 @@ $(BINDGEN_DIR): wit/world.wit $(OUT_DIR)
 .PHONY: clean
 clean:
 	rm -rf $(BINDGEN_DIR) $(OUT_DIR)
+
+$(OUT_DIR)/app.wat: $(OUT_DIR)/app.wasm
+	@wasm-tools print $< > $@
