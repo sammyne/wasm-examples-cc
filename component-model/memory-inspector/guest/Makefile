@@ -11,7 +11,7 @@ CFLAGS := -Wall -I$(BINDGEN_DIR)
 CC := /opt/wasi-sdk/bin/clang++
 CCFLAGS := -std=c++20 -fno-exceptions -Wall -I$(BINDGEN_DIR) -Iinclude
 
-LDFLAGS := -mexec-model=reactor
+LDFLAGS := -mexec-model=reactor -Wl,--wrap=calloc -Wl,--wrap=free -Wl,--wrap=malloc -Wl,--wrap=realloc -Wl,--wrap=realloc
 
 all: $(OUT_DIR)/app.wasm
 
@@ -25,7 +25,7 @@ $(BINDGEN_DIR)/$(WORLD_NAME).o: $(BINDGEN_DIR)/$(WORLD_NAME).c
 	$(C) $(CFLAGS) -c $< -o $@
 
 $(OUT_DIR)/greeter.wasm: src/lib.cc $(BINDGEN_DIR) $(OUT_DIR)  $(BINDGEN_DIR)/$(WORLD_NAME).o
-	$(CC) $(CCFLAGS) -Wl,--wrap=malloc -Wl,--wrap=free $< $(BINDGEN_DIR)/$(WORLD_NAME).o $(BINDGEN_DIR)/$(WORLD_NAME)_component_type.o -o $@ -mexec-model=reactor
+	$(CC) $(CCFLAGS) $< $(BINDGEN_DIR)/$(WORLD_NAME).o $(BINDGEN_DIR)/$(WORLD_NAME)_component_type.o -o $@ $(LDFLAGS)
 
 $(BINDGEN_DIR): wit/world.wit $(OUT_DIR)
 	@rm -rf $@
