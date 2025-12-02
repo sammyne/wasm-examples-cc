@@ -5,9 +5,17 @@
 extern "C" {
 #endif
 
-void *__wrap_malloc(size_t size);
+// man 3 malloc 输出中的 SYNOPSIS 小节列出的函数应该都需要包装。
+
+void *__wrap_calloc(size_t nmemb, size_t size);
 
 void __wrap_free(void *ptr);
+
+void *__wrap_malloc(size_t size);
+
+void *__wrap_realloc(void *ptr, size_t size);
+
+void *__wrap_reallocarray(void *ptr, size_t nmemb, size_t size);
 
 #ifdef __cplusplus
 }

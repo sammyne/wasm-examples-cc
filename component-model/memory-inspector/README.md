@@ -17,6 +17,21 @@ host-rs | Rust 编写用于调用 guest 组件的逻辑
 make run
 ```
 
+样例输出如下
+```bash
+request.name=0x11560
+message.c_str=0x1151c
+malloc(24)=0x31590
+message.c_str=0x31590
+ret->message.ptr=0x315b0
+free(0x31590)
+free(0x315b0)
+say-hello returns [Record([("message", String("Hello sammyne"))])]
+```
+
+## TODO
+- 解决 `__wrap_realloc` 加打印日志会导致失败的问题
+
 ## 参考文献
 - [How to wrap functions with the `--wrap` option correctly?](https://stackoverflow.com/a/46446749/10878967)
 - https://sourceware.org/binutils/docs/ld/Options.html#index-g_t_002d_002dwrap

@@ -21,6 +21,4 @@ world helloworld {
     use types.{hello-request, hello-reply};
 
     export greeter;
-
-    export say-hello-again: func(req: hello-request) -> hello-reply;
 }
