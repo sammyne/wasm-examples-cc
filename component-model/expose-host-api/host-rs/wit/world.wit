@@ -1,0 +1,10 @@
+package sammyne:hellohost@1.0.0;
+
+interface api {
+    new-greeting: func(who: string) -> string;
+}
+
+/// An example world for the component to target.
+world hellohost-world {
+    import api;
+}
