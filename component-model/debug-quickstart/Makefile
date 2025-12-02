@@ -25,7 +25,7 @@ lldb: guest/out/app.wasm build-host
 		-- host-rs/target/release/host -p $< -n $(name)
 
 run: guest/out/app.wasm build-host
-	host-rs/target/release/host -p $< -n sammyne
+	../../target/release/debug-quickstart-host -p $< -n sammyne
 
 $(OUT_DIR):
 	mkdir -p $(OUT_DIR)
