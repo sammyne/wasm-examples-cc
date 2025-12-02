@@ -11,7 +11,7 @@ CFLAGS := -Wall -I$(BINDGEN_DIR)
 CC := /opt/wasi-sdk/bin/clang++
 CCFLAGS := -std=c++20 -fno-exceptions -Wall -I$(BINDGEN_DIR) -Iinclude
 
-LDFLAGS := -mexec-model=reactor -Wl,--wrap=calloc -Wl,--wrap=free -Wl,--wrap=malloc -Wl,--wrap=realloc -Wl,--wrap=realloc
+LDFLAGS := -mexec-model=reactor -Wl,--wrap=calloc -Wl,--wrap=free -Wl,--wrap=malloc -Wl,--wrap=realloc -Wl,--wrap=reallocarray
 
 all: $(OUT_DIR)/app.wasm
 
