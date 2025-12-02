@@ -1,9 +1,15 @@
 [workspace]
 members = [
-  "component-model/hello-world/host-rs",
-  "component-model/debug-quickstart/host-rs",
-  "component-model/instance-count-limited/host-rs",
-  "component-model/trap-by-oom/host-rs"
+  "component-model/*/host-rs",
 ]
 
 resolver = "2"
+
+[workspace.dependencies]
+wasmtime = "30.0"
+wasmtime-wasi = "30.0"
+anyhow = "1.0"
+
+[workspace.dependencies.clap]
+features = ["derive"]
+version = "4"
