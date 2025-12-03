@@ -1,0 +1,11 @@
+package sammyne:hellohost@1.0.0;
+
+interface api {
+    // alloc-or-free: true for alloc, false for free
+    inspect: func(addr: u64, alloc-or-free: bool);
+}
+
+/// An example world for the component to target.
+world hellohost-world {
+    import api;
+}
