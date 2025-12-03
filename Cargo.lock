@@ -148,6 +148,16 @@ dependencies = [
 ]
 
 [[package]]
+name = "broken-memory-inspector-with-host-call-host"
+version = "0.1.0"
+dependencies = [
+ "anyhow",
+ "clap",
+ "wasmtime",
+ "wasmtime-wasi",
+]
+
+[[package]]
 name = "bumpalo"
 version = "3.18.1"
 source = "registry+https://github.com/rust-lang/crates.io-index"
