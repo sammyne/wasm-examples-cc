@@ -1,0 +1,13 @@
+[package]
+name = "global-var-host"
+version = "0.1.0"
+edition = "2024"
+
+[dependencies]
+wasmtime.workspace = true
+wasmtime-wasi.workspace = true
+anyhow.workspace = true
+
+[dependencies.clap]
+features = ["derive"]
+workspace = true
