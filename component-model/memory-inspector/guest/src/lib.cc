@@ -38,7 +38,7 @@ void *__wrap_realloc(void *ptr, size_t size) {
   // 不能直接调用 realloc，否则递归导致栈溢出。
   auto p = __real_realloc(ptr, size);
 
-  // TODO: 排查清楚加这行代码会导致失败的原因
+  // 加这行代码或 host 调用都会失败，详情参见 https://github.com/bytecodealliance/wasmtime/issues/12112
   // printf("realloc(%zu)=%p\n", size, p);
 
   return p;

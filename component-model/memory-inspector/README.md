@@ -29,8 +29,8 @@ free(0x315b0)
 say-hello returns [Record([("message", String("Hello sammyne"))])]
 ```
 
-## TODO
-- 解决 `__wrap_realloc` 加打印日志会导致失败的问题
+## FAQ
+- `__wrap_realloc` 加打印日志或 host 调用会失败，相关 issue 参见 https://github.com/bytecodealliance/wasmtime/issues/12112
 
 ## 参考文献
 - [How to wrap functions with the `--wrap` option correctly?](https://stackoverflow.com/a/46446749/10878967)
