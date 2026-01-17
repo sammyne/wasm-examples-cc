@@ -1,24 +1,20 @@
-#FROM debian:bookworm-20250224 AS rust
-FROM rust:1.85.0-bookworm AS rust
+FROM sammyne/llvm:18.1.8-debian-bookworm20260112 AS rust
 
 ENV RUSTUP_DIST_SERVER=https://rsproxy.cn       \
-  RUSTUP_UPDATE_ROOT=https://rsproxy.cn/rustup
+  RUSTUP_UPDATE_ROOT=https://rsproxy.cn/rustup  \
+  CARGO_HOME=/usr/local/cargo                   \
+  RUSTUP_HOME=/usr/local/rustup                 \
+  PATH=/usr/local/cargo/bin:$PATH
 
 RUN sed -i 's/deb.debian.org/mirrors.tencent.com/g' /etc/apt/sources.list.d/debian.sources &&\
   sed -i 's|security.debian.org/debian-security|mirrors.tencent.com/debian-security|g' /etc/apt/sources.list.d/debian.sources
 
-# 下载并添加 GPG 密钥
-# 添加 LLVM 18 的 APT 源（Debian 12 代号为 bookworm）
-RUN wget -qO- https://apt.llvm.org/llvm-snapshot.gpg.key | tee /etc/apt/trusted.gpg.d/llvm.asc &&\
-  echo "deb http://apt.llvm.org/bookworm/ llvm-toolchain-bookworm-18 main" | tee /etc/apt/sources.list.d/llvm-18.list
-
 RUN apt update                                        &&\
-  apt install -y ca-certificates &&\
-  apt install -y clang-18 lldb-18 curl git make vim  &&\
+  apt install -y curl git make vim                    &&\
   apt clean                                           &&\
   rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
 
-RUN ln -sf `which clang-18` /usr/bin/clang && ln -sf `which lldb-18` /usr/bin/lldb 
+RUN curl --proto '=https' --tlsv1.2 -sSf https://rsproxy.cn/rustup-init.sh | sh -s -- -y
 
 
 FROM busybox:1.36.1 AS wasi-sdk
@@ -29,9 +25,9 @@ ARG WASI_SDK_MINOR_VERSION
 
 WORKDIR /workspace
 
-RUN wget https://github.com/WebAssembly/wasi-sdk/releases/download/wasi-sdk-$WASI_SDK_MAJOR_VERSION/wasi-sdk-$WASI_SDK_MAJOR_VERSION.$WASI_SDK_MINOR_VERSION-x86_64-linux.tar.gz
+RUN wget https://github.com/WebAssembly/wasi-sdk/releases/download/wasi-sdk-$WASI_SDK_MAJOR_VERSION/wasi-sdk-$WASI_SDK_MAJOR_VERSION.$WASI_SDK_MINOR_VERSION-linux.tar.gz
 
-RUN mkdir /output && tar -C /output --strip-components 1 -zxvf wasi-sdk-$WASI_SDK_MAJOR_VERSION.$WASI_SDK_MINOR_VERSION-x86_64-linux.tar.gz
+RUN mkdir /output && tar -C /output --strip-components 1 -zxvf wasi-sdk-$WASI_SDK_MAJOR_VERSION.$WASI_SDK_MINOR_VERSION-linux.tar.gz
 
 
 FROM busybox:1.36.1 AS wasm-tools
