@@ -6,8 +6,8 @@ members = [
 resolver = "2"
 
 [workspace.dependencies]
-wasmtime = "30.0"
-wasmtime-wasi = "30.0"
+wasmtime = "21.0.1"
+wasmtime-wasi = "21.0.1"
 anyhow = "1.0"
 
 [workspace.dependencies.clap]

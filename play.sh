@@ -2,7 +2,7 @@
 
 cd `dirname ${BASH_SOURCE[0]}`
 
-repo_tag=sammyne/wasm-studio-cc:02b7b1a
+repo_tag=sammyne/wasm-studio-cc:wt20-ws22-7757489
 
 cache_dir=$PWD/_cache
 workdir=/github.com/sammyne/wasm-examples-cc

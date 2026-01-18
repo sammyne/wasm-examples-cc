@@ -30,34 +30,39 @@ fn main() -> anyhow::Result<()> {
         .instantiate(&mut store, &component)
         .context("instantiate")?;
 
-    // ref: https://docs.rs/wasmtime/30.0.2/wasmtime/component/struct.Instance.html#method.get_func
     let say_hello = {
-        let instance_idx = instance
-            .get_export(&mut store, None, INTERFACE)
-            .with_context(|| format!("miss interface: {INTERFACE}"))?;
-        let func_idx = instance
-            .get_export(&mut store, Some(&instance_idx), FUNC_NAME)
-            .with_context(|| format!("locate func '{FUNC_NAME}'"))?;
-        instance
-            .get_func(&mut store, &func_idx)
-            .with_context(|| format!("load func '{FUNC_NAME}'"))?
+        let mut exports = instance.exports(&mut store);
+        let mut i = exports
+            .instance(INTERFACE)
+            .with_context(|| format!("miss instance {INTERFACE}"))?;
+        i.func(FUNC_NAME)
+            .with_context(|| format!("miss func {FUNC_NAME}"))?
     };
+
     let params = [new_hello_request(name.clone())];
     let mut results = [Val::Bool(false)];
-    say_hello.call(&mut store, &params, &mut results).context("call")?;
+    say_hello
+        .call(&mut store, &params, &mut results)
+        .context("call")?;
     // post-return 清理 say-hello 关联的状态。
-    say_hello.post_return(&mut store).with_context(|| format!("post return '{FUNC_NAME}'"))?;
+    say_hello
+        .post_return(&mut store)
+        .with_context(|| format!("post return '{FUNC_NAME}'"))?;
     println!("say-hello returns {results:?}");
 
-    // ref: https://docs.rs/wasmtime/30.0.2/wasmtime/component/struct.Instance.html#method.get_func
-    let say_hello_again = instance .get_func(&mut store, FUNC_NAME2).with_context(|| format!("load func '{FUNC_NAME2}'"))?;
+    let say_hello_again = instance
+        .get_func(&mut store, FUNC_NAME2)
+        .with_context(|| format!("miss func {FUNC_NAME}"))?;
     let params = [new_hello_request(name)];
     let mut results = [Val::Bool(false)];
-    say_hello_again.call(&mut store, &params, &mut results).context("call")?;
+    say_hello_again
+        .call(&mut store, &params, &mut results)
+        .context("call")?;
     // post-return 清理 say-hello 关联的状态。
-    say_hello_again.post_return(&mut store).with_context(|| format!("post return '{FUNC_NAME}'"))?;
+    say_hello_again
+        .post_return(&mut store)
+        .with_context(|| format!("post return '{FUNC_NAME}'"))?;
     println!("say-hello-again returns {results:?}");
-
 
     Ok(())
 }
