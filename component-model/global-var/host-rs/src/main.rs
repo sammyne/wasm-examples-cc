@@ -40,7 +40,7 @@ fn main() -> anyhow::Result<()> {
     };
 
 
-    for i in 0..2 {
+    for i in 0..3 {
         println!("\n#{i} say-hello");
         let params = [new_hello_request(name.clone())];
         let mut results = [Val::Bool(false)];

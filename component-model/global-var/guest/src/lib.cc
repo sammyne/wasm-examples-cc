@@ -48,7 +48,8 @@ void exports_sammyne_helloworld_greeter_say_hello(exports_sammyne_helloworld_gre
 
   message = std::string("Hello ") + message;
 
-  printf("HELLO_WORLD.c_str=%p\n", HELLO_WORLD.c_str());
+  printf("addr(HELLO_WORLD)=%p, HELLO_WORLD='%s'\n", HELLO_WORLD.c_str(), HELLO_WORLD.c_str());
+  HELLO_WORLD = message + " :)";
 
   helloworld_string_dup(&ret->message, message.c_str());
 }
