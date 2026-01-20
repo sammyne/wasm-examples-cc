@@ -31,16 +31,14 @@ fn main() -> anyhow::Result<()> {
 
     // ref: https://docs.rs/wasmtime/30.0.2/wasmtime/component/struct.Instance.html#method.get_func
     let say_hello = {
-        let instance_idx = instance
-            .get_export(&mut store, None, INTERFACE)
-            .with_context(|| format!("miss interface: {INTERFACE}"))?;
-        let func_idx = instance
-            .get_export(&mut store, Some(&instance_idx), FUNC_NAME)
-            .with_context(|| format!("locate func '{FUNC_NAME}'"))?;
-        instance
-            .get_func(&mut store, &func_idx)
-            .with_context(|| format!("load func '{FUNC_NAME}'"))?
+        let mut exports = instance.exports(&mut store);
+        let mut i = exports
+            .instance(INTERFACE)
+            .with_context(|| format!("miss instance {INTERFACE}"))?;
+        i.func(FUNC_NAME)
+            .with_context(|| format!("miss func {FUNC_NAME}"))?
     };
+
 
     for i in 0..2 {
         println!("\n#{i} say-hello");
