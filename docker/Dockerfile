@@ -14,7 +14,10 @@ RUN apt update                                        &&\
   apt clean                                           &&\
   rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
 
-RUN curl --proto '=https' --tlsv1.2 -sSf https://rsproxy.cn/rustup-init.sh | sh -s -- -y
+ARG RUST_TOOLCHAIN
+
+RUN curl --proto '=https' --tlsv1.2 -sSf https://rsproxy.cn/rustup-init.sh | \
+  sh -s -- --default-toolchain $RUST_TOOLCHAIN -y
 
 
 FROM busybox:1.36.1 AS wasi-sdk
